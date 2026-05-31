@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Graduation, Muti! ❤️</title>
+    <style>
+        /* --- CSS STYLING --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffe5ec, #ffc2d1);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; 
+            overflow-y: auto; /* Layar utama bisa di-scroll bebas */
+            overflow-x: hidden;
+            color: #4a4a4a;
+            padding: 25px 15px;
+            position: relative;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Container Utama - Fleksibel mengikuti panjang konten */
+        .container {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 30px 20px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(255, 71, 126, 0.15);
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            margin: auto; 
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: #ff477e;
+            margin-bottom: 12px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            color: #5c5c5c;
+        }
+
+        /* Desain Tombol */
+        .love-btn {
+            background: linear-gradient(45deg, #ff477e, #ff7096);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 71, 126, 0.4);
+            transition: all 0.3s ease;
+        }
+        .love-btn:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 71, 126, 0.5);
+        }
+
+        /* Gaya Tombol Kuis */
+        .quiz-btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-yes {
+            background: #2ec4b6;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(46, 196, 182, 0.3);
+            transition: all 0.2s;
+        }
+        .btn-yes:hover { transform: scale(1.05); background: #25a195; }
+
+        .btn-no {
+            background: #e63946;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3);
+            transition: all 0.2s;
+        }
+        .btn-no:hover { transform: scale(1.05); background: #cb2d39; }
+
+        /* UI MINI AUDIO PLAYER */
+        .audio-player {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid #ffc2d1;
+            border-radius: 15px;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .play-pause-btn {
+            background: #ff477e;
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .player-controls {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .timeline-slider {
+            width: 100%;
+            height: 5px;
+            background: #e8e8e8;
+            border-radius: 5px;
+            outline: none;
+            cursor: pointer;
+            accent-color: #ff477e;
+        }
+
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #888;
+            font-family: monospace;
+        }
+
+        /* Halaman 2: Album Foto Polaroid (Responsif Scroll Layar) */
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            min-height: 300px; 
+            border-radius: 12px;
+            margin-bottom: 20px;
+            background: #ffffff; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 15px 60px 15px; 
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide.active { 
+            display: flex; 
+        }
+
+        .slide img {
+            width: 100%;
+            height: auto; 
+            max-height: 400px; 
+            object-fit: contain; 
+            border-radius: 4px;
+        }
+
+        .polaroid-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            color: #777;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .next-btn, .back-btn {
+            border: none;
+            padding: 12px 26px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .next-btn { background: #ff477e; color: white; box-shadow: 0 4px 12px rgba(255, 71, 126, 0.3); }
+        .back-btn { background: #e8e8e8; color: #666; }
+
+        /* Halaman: Interaktif Amplop Surat */
+        .envelope-wrapper {
+            margin: 30px auto;
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+        .envelope-wrapper:hover { transform: scale(1.05); }
+        .envelope-icon { font-size: 4.5rem; animation: float 2s infinite ease-in-out; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Kotak Surat Teks */
+        .letter-box {
+            text-align: left;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px dashed #ffc2d1;
+            margin-bottom: 20px;
+        }
+        .letter-box h2 { color: #ff477e; text-align: center; margin-bottom: 15px; font-size: 1.3rem; }
+
+        #typing-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            text-align: justify;
+            white-space: pre-line;
+            color: #4a4a4a;
+        }
+
+        /* Animasi Latar Belakang Hujan Hati */
+        .heart-fall {
+            position: fixed; 
+            top: -20px;
+            color: #ff477e;
+            font-size: 18px;
+            opacity: 0.5;
+            animation: fall linear infinite;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Partikel Klik Efek Burst */
+        .click-heart {
+            position: fixed; 
+            color: #ff477e;
+            pointer-events: none; /* Penting agar tidak menghambat scroll jari */
+            z-index: 9999;
+            animation: burst 0.8s ease-out forwards;
+        }
+
+        @keyframes burst {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0); opacity: 0; }
+        }
+
+        /* Custom Notifikasi Pesan Bijak */
+        .custom-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            z-index: 1000;
+            width: 85%;
+            max-width: 350px;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .custom-alert.show { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+        .custom-alert p { font-size: 0.95rem; color: #555; margin-bottom: 15px; line-height: 1.6; }
+        .custom-alert button {
+            background: #ff477e; color: white; border: none; padding: 8px 25px; border-radius: 20px; font-weight: bold; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="music/golden_hour_instrumental.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="wisdomAlert" class="custom-alert">
+        <h2 style="color:#ff477e; font-size:1.2rem; margin-bottom:10px;">Pesan Bijak Untukmu ✨</h2>
+        <p>Muti, kelulusan ini adalah gerbang awal kedewasaan. Menjadi lebih baik bukan pilihan, melainkan sebuah keharusan agar langkahmu di masa depan penuh dengan berkah dan kesuksesan. Yuk, berjanji untuk dirimu sendiri! 💖</p>
+        <button onclick="closeAlert()">Siap, Aku Paham Kelak</button>
+    </div>
+
+    <div id="page1" class="container">
+        <h1>Happy Graduation, Muti! 🎉🎓</h1>
+        <p>Aku buat ini semoga website ini bisa jadi kenangan kelulusan sekolah kamu dari aku. Coba klik deh tombol di bawah ini...</p>
+        <button class="love-btn" onclick="goToQuiz()">Klik Aku ❤️</button>
+    </div>
+
+    <div id="pageQuiz" class="container hidden">
+        <div class="audio-player">
+            <button class="play-pause-btn" id="playPauseBtn" onclick="toggleMusic()">⏸️</button>
+            <div class="player-controls">
+                <input type="range" class="timeline-slider" id="timeline" min="0" value="0" step="1" oninput="seekMusic()">
+                <div class="time-info">
+                    <span id="currentTime">00:00</span>
+                    <span id="totalTime">04:41</span>
+                </div>
+            </div>
+        </div>
+
+        <h1>Satu Pertanyaan Penting! 🤔</h1>
+        <p style="font-weight: bold; color: #ff477e; font-size: 1.1rem;">Apakah kamu janji untuk menjadi orang yang lebih baik lagi kedepannya?</p>
+        <div class="quiz-btn-group">
+            <button class="btn-yes" onclick="answerYes()">Iya, Janji! 💖</button>
+            <button class="btn-no" onclick="answerNo()">Tidak Janji 🥺</button>
+        </div>
+    </div>
+
+    <div id="page2" class="container hidden">
+        <div id="playerPlaceholderPage2"></div>
+
+        <h1>Aku letakkan beberapa foto kelulusan kamu disini yaa ✨</h1>
+        <p>Supaya kamu inget terus sama moment ini</p>
+        
+        <div class="slideshow-container">
+            <div class="slide active"><img src="images/foto1.jpeg" alt="Foto Muti 1"></div>
+            <div class="slide"><img src="images/foto2.jpeg" alt="Foto Muti 2"></div>
+            <div class="slide"><img src="images/foto3.jpeg" alt="Foto Muti 3"></div>
+            <div class="slide"><img src="images/foto4.jpeg" alt="Foto Muti 4"></div>
+            <div class="slide"><img src="images/foto5.jpeg" alt="Foto Muti 5"></div>
+            
+            <div class="polaroid-caption" id="photoCaption">MEMORIES 1/5</div>
+        </div>
+
+        <div class="btn-group">
+            <button class="back-btn" onclick="prevSlide()">⬅️ Kembali</button>
+            <button class="next-btn" id="btnNext" onclick="nextSlide()">Lanjut ➡️</button>
+        </div>
+    </div>
+
+    <div id="pageEnvelope" class="container hidden">
+        <div id="playerPlaceholderEnvelope"></div>
+        <h1>Satu Kejutan Terakhir... 💌</h1>
+        <p>Ada surat cinta dari aku buat kamu. Silakan klik amplop di bawah ini untuk membukanya yaa!</p>
+        <div class="envelope-wrapper" onclick="openLetter()">
+            <div class="envelope-icon">✉️</div>
+        </div>
+    </div>
+
+    <div id="page3" class="container hidden">
+        <div id="playerPlaceholderPage3"></div>
+        <div class="letter-box">
+            <h2>Selamat Kelulusannya, Cantikkuu! 💖</h2>
+            <div id="typing-text"></div>
+        </div>
+        <div class="btn-group">
+            <button class="back-btn" onclick="backToPhotos()">⬅️ Lihat Foto Lagi</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const music = document.getElementById('bgMusic');
+        const caption = document.getElementById('photoCaption');
+        const audioPlayer = document.querySelector('.audio-player');
+
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const timeline = document.getElementById('timeline');
+        const currentTimeLabel = document.getElementById('currentTime');
+        const totalTimeLabel = document.getElementById('totalTime');
+
+        const letterContent = `Hai Muti,
+
+Selamat atas kelulusannya ya! Aku bener-bener bangga banget sama semua kerja keras, air mata, dan usaha yang udah kamu laluin sampai bisa ada di titik ini. Aku tahu perjalanannya nggak selalu mudah, tapi kamu berhasil ngebuktiin kalau kamu kuat.
+
+Melihat foto-foto tadi bikin aku sadar seberapa jauh kamu udah melangkah. Masa sekolah mungkin udah selesai, tapi petualangan kamu yang sebenarnya baru aja dimulai. Dan aku berharap bisa terus ada di samping kamu buat melihat semua kesuksesan kamu ke depannya.
+
+Tetap jadi Muti yang ceria, penuh semangat, dan baik hati ya. Oh iya jangan lupa berterimakasih ke Orang tua tercinta dan keluarga kamu yaa Happy graduation, my proudest achievement is seeing you achieve yours. I love you so much! 🎓✨❤️`;
+
+        // --- FIX SISTEM AUDIO PLAYER CUSTOM ---
+        function moveAudioPlayer(destinationId) {
+            const dest = document.getElementById(destinationId);
+            if(dest) dest.appendChild(audioPlayer);
+        }
+
+        function initAudioPlayer() {
+            music.volume = 0.20; 
+            
+            // Atur default max timeline ke 281 detik (4:41) sebagai cadangan anti-mentok awal
+            timeline.max = 281;
+            totalTimeLabel.innerText = "04:41";
+
+            function setDuration() {
+                if (music.duration && !isNaN(music.duration)) {
+                    timeline.max = music.duration;
+                    totalTimeLabel.innerText = formatTime(music.duration);
+                }
+            }
+
+            music.onloadedmetadata = setDuration;
+            music.onplay = setDuration;
+
+            music.ontimeupdate = function() {
+                // Selalu sinkronkan ulang jika metadata terdeteksi di tengah jalan
+                if (music.duration && timeline.max !== music.duration) {
+                    timeline.max = music.duration;
+                    totalTimeLabel.innerText = formatTime(music.duration);
+                }
+                timeline.value = music.currentTime;
+                currentTimeLabel.innerText = formatTime(music.currentTime);
+            };
+        }
+
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                playPauseBtn.innerText = "⏸️";
+            } else {
+                music.pause();
+                playPauseBtn.innerText = "▶️";
+            }
+        }
+
+        function seekMusic() {
+            music.currentTime = timeline.value;
+        }
+
+        function formatTime(secs) {
+            let min = Math.floor(secs / 60);
+            let sec = Math.floor(secs % 60);
+            if (sec < 10) sec = `0${sec}`;
+            if (min < 10) min = `0${min}`;
+            return `${min}:${sec}`;
+        }
+
+        // --- EFEK KLIK BURST HATI COORDS FIXED ---
+        document.addEventListener('click', function(e) {
+            if(e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') return;
+
+            for (let i = 0; i < 6; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('click-heart');
+                heart.innerHTML = '❤️';
+                heart.style.left = e.clientX + 'px';
+                heart.style.top = e.clientY + 'px';
+                
+                const x = (Math.random() - 0.5) * 150;
+                const y = (Math.random() - 0.5) * 150;
+                heart.style.setProperty('--x', `${x}px`);
+                heart.style.setProperty('--y', `${y}px`);
+                
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 800);
+            }
+        });
+
+        // --- SISTEM NAVIGASI ALUR WEB ---
+        function updateCaption() {
+            caption.innerText = `MEMORIES ${currentSlide + 1}/${totalSlides}`;
+        }
+
+        function createHeartFall() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-fall');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 3 + 's'; 
+            heart.style.fontSize = Math.random() * 12 + 12 + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 6000);
+        }
+
+        function goToQuiz() {
+            document.getElementById('page1').classList.add('hidden');
+            document.getElementById('pageQuiz').classList.remove('hidden');
+            
+            initAudioPlayer();
+            music.play().catch(e => console.log("Autoplay ditahan browser"));
+            
+            setInterval(createHeartFall, 400); 
+        }
+
+        function answerNo() {
+            document.getElementById('wisdomAlert').classList.add('show');
+        }
+
+        function closeAlert() {
+            document.getElementById('wisdomAlert').classList.remove('show');
+        }
+
+        function answerYes() {
+            document.getElementById('pageQuiz').classList.add('hidden');
+            document.getElementById('page2').classList.remove('hidden');
+            moveAudioPlayer('playerPlaceholderPage2');
+        }
+
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide++;
+
+            if (currentSlide < totalSlides) {
+                slides[currentSlide].classList.add('active');
+                updateCaption();
+                if (currentSlide === totalSlides - 1) {
+                    document.getElementById('btnNext').innerText = "Lihat Pesan Terakhir ✨";
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' }); 
+            } else {
+                document.getElementById('page2').classList.add('hidden');
+                document.getElementById('pageEnvelope').classList.remove('hidden');
+                moveAudioPlayer('playerPlaceholderEnvelope');
+                window.scrollTo({ top: 0 });
+            }
+        }
+
+        function prevSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide--;
+
+            if (currentSlide >= 0) {
+                slides[currentSlide].classList.add('active');
+                updateCaption();
+                document.getElementById('btnNext').innerText = "Lanjut ➡️";
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                currentSlide = 0; 
+                slides[currentSlide].classList.add('active');
+                updateCaption();
+                document.getElementById('page2').classList.add('hidden');
+                document.getElementById('pageQuiz').classList.remove('hidden');
+                const quizPage = document.getElementById('pageQuiz');
+                quizPage.insertBefore(audioPlayer, quizPage.firstChild);
+                window.scrollTo({ top: 0 });
+            }
+        }
+
+        // Membuka Halaman Surat saat Amplop di-klik
+        function openLetter() {
+            document.getElementById('pageEnvelope').classList.add('hidden');
+            document.getElementById('page3').classList.remove('hidden');
+            moveAudioPlayer('playerPlaceholderPage3');
+            window.scrollTo({ top: 0 });
+            startTyping();
+        }
+
+        function backToPhotos() {
+            document.getElementById('page3').classList.add('hidden');
+            document.getElementById('page2').classList.remove('hidden');
+            moveAudioPlayer('playerPlaceholderPage2');
+            window.scrollTo({ top: 0 });
+            
+            currentSlide = totalSlides - 1;
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[currentSlide].classList.add('active');
+            updateCaption();
+            document.getElementById('btnNext').innerText = "Lihat Pesan Terakhir ✨";
+            document.getElementById('typing-text').innerHTML = "";
+        }
+
+        let typingIndex = 0;
+        function startTyping() {
+            const typingContainer = document.getElementById('typing-text');
+            typingContainer.innerHTML = "";
+            typingIndex = 0;
+            
+            function type() {
+                if (typingIndex < letterContent.length) {
+                    typingContainer.innerHTML += letterContent.charAt(typingIndex);
+                    typingIndex++;
+                    setTimeout(type, 35); 
+                }
+            }
+            type();
+        }
+    </script>
+</body>
+</html>
